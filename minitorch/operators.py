@@ -34,9 +34,12 @@ def lt(x: float, y: float) -> float:
     "$f(x) =$ 1.0 if x is less than y else 0.0"
     return 1.0 if x <= y else 0.0
 
+
 def eq(x: float, y: float) -> float:
     "$f(x) =$ 1.0 if x is equal to y else 0.0"
-    return 1.0 if abs(x - y) < 1e-8 else 0.0 # TODO: is 1e-8 appropriate as an eps value?
+    return (
+        1.0 if abs(x - y) < 1e-8 else 0.0
+    )  # TODO: is 1e-8 appropriate as an eps value?
 
 
 def max(x: float, y: float) -> float:
@@ -88,12 +91,12 @@ def exp(x: float) -> float:
 
 def log_back(x: float, d: float) -> float:
     r"If $f = log$ as above, compute $d \times f'(x)$"
-    return d * (1/x)
+    return d * (1 / x)
 
 
 def inv(x: float) -> float:
     "$f(x) = 1/x$"
-    return 1/x
+    return 1 / x
 
 
 def inv_back(x: float, d: float) -> float:
@@ -124,8 +127,10 @@ def map(fn: Callable[[float], float]) -> Callable[[Iterable[float]], Iterable[fl
         A function that takes a list, applies `fn` to each element, and returns a
          new list
     """
-    def fn_list(x: Iterable[float]):
+
+    def fn_list(x: Iterable[float]) -> Iterable[float]:
         return [fn(xx) for xx in x]
+
     return fn_list
 
 
@@ -150,8 +155,10 @@ def zipWith(
          applying fn(x, y) on each pair of elements.
 
     """
-    def fn_list(x: Iterable[float], y: Iterable[float]):
+
+    def fn_list(x: Iterable[float], y: Iterable[float]) -> Iterable[float]:
         return [fn(xx, yy) for xx, yy in zip(x, y)]
+
     return fn_list
 
 
@@ -175,10 +182,13 @@ def reduce(
          $x_1 \ldots x_n$ and computes the reduction :math:`fn(x_3, fn(x_2,
          fn(x_1, x_0)))`
     """
-    def fn_list(x: Iterable[float]):
+
+    def fn_list(x: Iterable[float]) -> float:
         out = start
-        for xx in x: out = fn(out, xx)
+        for xx in x:
+            out = fn(out, xx)
         return out
+
     return fn_list
 
 
